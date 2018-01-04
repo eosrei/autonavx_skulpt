@@ -9,6 +9,7 @@ var $builtinmodule = function(name)
       'points': {},
       'covariance2d': {},
       'covariance3d': {},
+      'marker': {},
     }
   };
 
@@ -16,6 +17,7 @@ var $builtinmodule = function(name)
 
   plot['clear'] = function() {
     Object.keys(plot.data).forEach(function(type) {
+      //plot.data[type] = {};
       Object.keys(plot.data[type]).forEach(function(name) {
         plot.data[type][name] = [];
       });
@@ -89,6 +91,12 @@ var $builtinmodule = function(name)
     Sk.builtin.pyCheckType('name', 'string', Sk.builtin.checkString(name));
 
     addPlotValue('covariance3d', name.v, cov.v.toArray());
+  });
+
+  mod.plot_marker = new Sk.builtin.func(function(id, position, yaw) {
+    Sk.builtin.pyCheckArgs('plot_marker', arguments, 3);
+
+    addPlotValue('marker', id.v, [position.v.get([0, 0]), position.v.get([1, 0]), yaw.v]);
   });
 
   return mod;
